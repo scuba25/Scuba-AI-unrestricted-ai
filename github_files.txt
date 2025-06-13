@@ -1,0 +1,194 @@
+# .gitignore
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Flask
+instance/
+.webassets-cache
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Project specific
+conversations.json
+*.log
+*.pid
+
+---
+
+# LICENSE (MIT)
+MIT License
+
+Copyright (c) 2024 Scuba AI
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+# CONTRIBUTING.md
+# Contributing to Scuba AI
+
+Thank you for your interest in contributing to Scuba AI! This document provides guidelines for contributing to the project.
+
+## How to Contribute
+
+### Reporting Bugs
+- Use the GitHub Issues page to report bugs
+- Include detailed reproduction steps
+- Provide your Python version, OS, and error logs
+- Check if the issue already exists before creating a new one
+
+### Suggesting Features
+- Open an issue with the "enhancement" label
+- Clearly describe the feature and its benefits
+- Provide examples of how it would be used
+
+### Code Contributions
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Make your changes
+4. Add tests if applicable
+5. Ensure code follows the existing style
+6. Commit with clear messages: `git commit -m 'Add amazing feature'`
+7. Push to your branch: `git push origin feature/amazing-feature`
+8. Open a Pull Request
+
+### Development Setup
+```bash
+git clone https://github.com/scuba25/Scuba-AI-unrestricted-ai.git
+cd Scuba-AI-unrestricted-ai
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+### Code Style
+- Follow PEP 8 guidelines
+- Use meaningful variable names
+- Add comments for complex logic
+- Keep functions focused and small
+
+### Testing
+- Test your changes locally before submitting
+- Ensure the app starts without errors
+- Test the chat functionality
+- Verify mobile responsiveness
+
+## Questions?
+Feel free to open an issue for any questions about contributing!
+
+---
+
+# SECURITY.md
+# Security Policy
+
+## Supported Versions
+
+| Version | Supported          |
+| ------- | ------------------ |
+| 1.0.x   | :white_check_mark: |
+
+## Reporting a Vulnerability
+
+If you discover a security vulnerability, please report it by emailing [security@example.com] instead of using the public issue tracker.
+
+Please include:
+- Description of the vulnerability
+- Steps to reproduce
+- Potential impact
+- Suggested fix (if any)
+
+We will respond within 48 hours and provide regular updates on the fix progress.
+
+## Security Considerations
+
+- API keys should never be committed to version control
+- Use environment variables for sensitive configuration
+- The application includes session management for security
+- Conversations are automatically cleaned up after 24 hours
+- Input validation is performed on all user inputs
+
+---
+
+# Dockerfile
+FROM python:3.9-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements first for better caching
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application code
+COPY . .
+
+# Create non-root user
+RUN useradd -m -u 1000 scubaai && chown -R scubaai:scubaai /app
+USER scubaai
+
+# Expose port
